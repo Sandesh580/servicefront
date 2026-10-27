@@ -1,0 +1,89 @@
+.signup-container {
+  width: 350px;
+  margin: 80px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px #00000015;
+}
+
+.signup-container h1 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.signup-container p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.auth-error-message {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.auth-success-message {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-container input,
+.signup-container button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+.signup-container input {
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.signup-container input:focus {
+  border-color: #16a34a;
+}
+
+.signup-container button {
+  background: #16a34a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.signup-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-link {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #16a34a;
+  text-decoration: none;
+  font-weight: 600;
+}
