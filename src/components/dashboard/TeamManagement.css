@@ -1,0 +1,102 @@
+.team-page { color: var(--ink); }
+.team-hero { min-height: 214px; position: relative; display: flex; align-items: center; justify-content: space-between; overflow: hidden; padding: 32px 38px; border: 1px solid #d6ede4; border-radius: 18px; background: linear-gradient(115deg, #eff9f4 0%, #e9f4f3 52%, #e9f1fb 100%); }
+.is-dark .team-hero { border-color: #315246; background: linear-gradient(115deg, #1d382e 0%, #203832 52%, #243342 100%); }
+.team-hero-copy { position: relative; z-index: 1; max-width: 520px; }
+.team-kicker { color: #16856a; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+.is-dark .team-kicker { color: #83d8b8; }
+.team-hero h1 { margin: 8px 0 7px; color: var(--ink); font-size: clamp(30px, 3vw, 40px); font-weight: 780; letter-spacing: -.05em; line-height: 1.1; }
+.team-hero p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+.team-hero-art { width: 215px; height: 160px; position: absolute; right: 45px; top: 26px; }
+.team-art-orbit { position: absolute; display: block; border: 1px solid rgba(20, 156, 122, .16); border-radius: 50%; }
+.orbit-one { width: 150px; height: 150px; top: 3px; left: 34px; }
+.orbit-two { width: 110px; height: 110px; top: 23px; left: 54px; }
+.team-art-person { width: 48px; height: 48px; position: absolute; display: grid; place-items: center; border: 4px solid rgba(255,255,255,.82); border-radius: 16px; box-shadow: 0 8px 20px rgba(37, 91, 72, .12); font-size: 15px; font-weight: 800; }
+.person-one { top: 10px; left: 98px; color: #fff; background: #62b99a; transform: rotate(7deg); }
+.person-two { top: 66px; left: 31px; color: #fff; background: #83a9da; transform: rotate(-8deg); }
+.person-three { top: 92px; left: 129px; color: #fff; background: #efb86c; transform: rotate(6deg); }
+.team-alert, .team-notice { margin: 16px 0 0; padding: 11px 14px; border: 1px solid #f0caca; border-radius: 9px; background: #fff4f4; color: #a33939; font-size: 13px; }
+.team-notice { border-color: #b7e2d1; background: #eef9f4; color: #19745d; }
+.is-dark .team-alert { border-color: #654040; background: #3c2424; color: #ffb3b3; }
+.is-dark .team-notice { border-color: #285b48; background: #1b382e; color: #8bd8b7; }
+.team-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 26px 0 17px; }
+.team-count { display: flex; align-items: baseline; gap: 8px; color: var(--ink-soft); font-size: 13px; }
+.team-count strong { color: var(--ink); font-size: 21px; font-weight: 760; }
+.team-actions { min-width: 0; display: flex; align-items: center; gap: 10px; }
+.team-search { width: min(330px, 34vw); height: 42px; display: flex; align-items: center; gap: 9px; padding: 0 12px; color: var(--ink-faint); border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.team-search > span { font-size: 22px; line-height: 1; }
+.team-search input { width: 100%; min-width: 0; color: var(--ink); border: 0; outline: 0; background: transparent; font-size: 12px; }
+.team-search input::placeholder { color: var(--ink-faint); }
+.team-add-button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 15px; color: #fff !important; border: 1px solid #128667; border-radius: 9px; background: #128667; box-shadow: 0 4px 10px rgba(18, 134, 103, .14); font-size: 12px !important; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background .15s ease, transform .15s ease; }
+.team-add-button:hover:not(:disabled) { background: #08795f; transform: translateY(-1px); }
+.team-add-button:disabled { opacity: .65; cursor: wait; }
+.technician-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 15px; }
+.technician-card { min-width: 0; display: flex; flex-direction: column; padding: 19px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); box-shadow: var(--shadow); transition: transform .16s ease, box-shadow .16s ease; }
+.technician-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(25, 56, 49, .08); }
+.technician-avatar { width: 52px; height: 52px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 17px; color: #167457; background: #dff3e9; font-size: 17px; font-weight: 800; }
+.avatar-1 { color: #436da2; background: #e2edfb; }
+.avatar-2 { color: #9c6831; background: #fbedd9; }
+.avatar-3 { color: #8d5d9c; background: #f0e5f4; }
+.avatar-4 { color: #a25454; background: #f9e4e1; }
+.technician-status { display: inline-flex; align-items: center; gap: 6px; color: #278264; font-size: 10px; font-weight: 700; }
+.technician-status i { width: 7px; height: 7px; border-radius: 50%; background: #35aa7c; box-shadow: 0 0 0 3px rgba(53, 170, 124, .11); }
+.technician-card h2 { overflow: hidden; margin: 6px 0 5px; color: var(--ink); font-size: 17px; font-weight: 740; text-overflow: ellipsis; white-space: nowrap; }
+.technician-card-copy a, .technician-card-copy p { overflow: hidden; display: block; margin: 0; color: var(--ink-soft); font-size: 12px; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+.technician-card-copy a:hover { color: var(--green-dark); text-decoration: underline; }
+.technician-card-copy p { margin-top: 5px; }
+.technician-card-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 13px; border-top: 1px solid var(--line); }
+.technician-edit, .technician-delete { padding: 5px 0; color: #08795f; border: 0; background: transparent; font-size: 11px; font-weight: 700; cursor: pointer; }
+.technician-edit:hover, .technician-delete:hover:not(:disabled) { text-decoration: underline; }
+.technician-delete { color: #bd4b4b; }
+.technician-delete:disabled { opacity: .6; cursor: wait; }
+.team-empty { min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; border: 1px dashed var(--line); border-radius: 13px; background: var(--surface); text-align: center; }
+.team-empty-icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 9px; color: #148a68; border-radius: 14px; background: var(--green-wash); font-size: 25px; }
+.team-empty h2 { margin: 4px 0; color: var(--ink); font-size: 17px; }
+.team-empty p { max-width: 360px; margin: 0 0 15px; color: var(--ink-soft); font-size: 12px; }
+.team-modal-backdrop { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(12, 25, 22, .5); backdrop-filter: blur(4px); }
+.team-modal { width: min(100%, 470px); max-height: min(90vh, 760px); overflow: auto; padding: 25px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: 0 20px 70px rgba(0, 0, 0, .24); }
+.team-modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 21px; }
+.team-modal-heading h2 { margin: 6px 0 4px; color: var(--ink); font-size: 22px; letter-spacing: -.035em; }
+.team-modal-heading p { margin: 0; color: var(--ink-soft); font-size: 12px; }
+.team-modal-close { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 24px; cursor: pointer; }
+.technician-form { display: flex; flex-direction: column; gap: 13px; }
+.technician-form label { display: flex; flex-direction: column; gap: 6px; color: var(--ink-soft); font-size: 11px; font-weight: 700; }
+.technician-form input { width: 100%; min-height: 42px; padding: 0 11px; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; outline: none; background: var(--surface); font-size: 13px; }
+.technician-form input:focus { border-color: #83cdb4; box-shadow: 0 0 0 3px rgba(20, 156, 122, .1); }
+.technician-form input::placeholder { color: var(--ink-faint); }
+.technician-form-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 7px; }
+.team-cancel-button { min-height: 42px; padding: 0 15px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 9px; background: var(--surface); font-size: 12px; font-weight: 700; cursor: pointer; }
+.team-cancel-button:hover:not(:disabled) { background: var(--surface-muted); }
+.team-cancel-button:disabled { opacity: .6; cursor: wait; }
+
+/* Technician profile details */
+.team-modal:has(.technician-form-grid) { width: min(100%, 760px); }
+.technician-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 15px; }
+.technician-form-grid label { min-width: 0; }
+.technician-form-grid label small { font-size: 11px; line-height: 1.4; }
+.technician-form-grid input, .technician-form-grid select, .technician-form-grid textarea { width: 100%; min-height: 42px; padding: 10px 11px; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; outline: none; background: var(--surface); font: inherit; font-size: 13px; }
+.technician-form-grid textarea { min-height: 72px; resize: vertical; }
+.technician-form-grid input:focus, .technician-form-grid select:focus, .technician-form-grid textarea:focus { border-color: #83cdb4; box-shadow: 0 0 0 3px rgba(20, 156, 122, .1); }
+.technician-form-grid textarea::placeholder, .technician-form-grid input::placeholder { color: var(--ink-faint); }
+.technician-form-grid .technician-form-wide { grid-column: 1 / -1; }
+.required-marker { width: fit-content; color: #a23b3b; font-size: 10px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+.is-dark .required-marker { color: #ff9d9d; }
+
+@media (max-width: 620px) {
+  .technician-form-grid { grid-template-columns: 1fr; }
+  .technician-form-grid .technician-form-wide { grid-column: auto; }
+}
+
+@media (max-width: 620px) {
+  .team-hero { min-height: 185px; padding: 25px 22px; }
+  .team-hero-art { right: -69px; opacity: .6; }
+  .team-hero-copy { max-width: 75%; }
+  .team-hero p { font-size: 12px; }
+  .team-toolbar { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .team-actions { width: 100%; flex-direction: column; align-items: stretch; }
+  .team-search { width: 100%; }
+  .technician-grid { grid-template-columns: 1fr; }
+  .team-modal { padding: 20px; }
+}
+
+.technician-list-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.technician-list{display:grid;grid-template-columns:110px minmax(190px,1.1fr) minmax(190px,1fr) minmax(145px,.8fr) 170px;align-items:center;gap:16px;min-width:900px;padding:12px 18px}.technician-list-heading{position:sticky;top:0;border-bottom:1px solid var(--line);background:var(--surface-muted);color:var(--ink-soft);font-size:11px;font-weight:800}.technician-list-row{min-height:68px;border-bottom:1px solid var(--line);font-size:13px}.technician-list-row:last-child{border-bottom:0}.technician-id{color:#168162;font-size:12px;font-variant-numeric:tabular-nums}.technician-name{display:flex;align-items:center;gap:10px;min-width:0}.technician-name strong{overflow:hidden;color:var(--ink);text-overflow:ellipsis;white-space:nowrap}.technician-name .technician-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:11px;font-size:12px}.technician-specialties,.technician-phone{overflow:hidden;color:var(--ink-soft);text-overflow:ellipsis;white-space:nowrap}.technician-phone{color:#168162;font-weight:700;text-decoration:none}.technician-phone:hover{text-decoration:underline}.technician-row-actions{display:flex;justify-content:flex-end;gap:8px}.technician-row-actions button{min-height:34px;padding:0 12px}
+@media(max-width:620px){.technician-list{min-width:850px}}

@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  cacheDir: '.vite-cache',
   server: {
     port: 5173,
     proxy: {
@@ -15,3 +16,4 @@ export default defineConfig({
     },
   },
 })
+

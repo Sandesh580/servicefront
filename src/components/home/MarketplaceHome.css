@@ -1,0 +1,192 @@
+.dhc-market-home {
+  --market-ink: #132d29;
+  --market-muted: #6d7c77;
+  --market-green: #08876a;
+  --market-green-dark: #076c56;
+  --market-lime: #b7dc66;
+  --market-line: #e2e9e5;
+  --market-paper: #f6f8f5;
+  --market-white: #fff;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--market-ink);
+  background: var(--market-paper);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.dhc-market-home button,
+.dhc-market-home input { font: inherit; }
+.dhc-market-home button { cursor: pointer; }
+.dhc-market-topline { display: flex; align-items: center; justify-content: space-between; min-height: 35px; padding: 0 clamp(20px, 6vw, 92px); color: #e9f4ed; background: #123d32; font-size: 11px; font-weight: 650; letter-spacing: .025em; }
+.dhc-market-topline a { color: inherit; text-decoration: none; }
+.dhc-market-topline strong { margin-left: 8px; color: #d6eea4; }
+.dhc-market-header { position: sticky; z-index: 12; top: 0; display: flex; align-items: center; gap: clamp(18px, 3vw, 42px); min-height: 84px; padding: 12px clamp(20px, 6vw, 92px); border-bottom: 1px solid rgba(226, 233, 229, .8); background: rgba(255,255,255,.96); backdrop-filter: blur(16px); }
+.dhc-market-brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 10px; color: var(--market-green-dark); text-decoration: none; }
+.dhc-market-brand img { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; background: white; }
+.dhc-market-brand > span { display: block; color: #16453b; font-size: 17px; font-weight: 500; letter-spacing: -.04em; white-space: nowrap; }
+.dhc-market-brand b { font-weight: 900; }
+.dhc-market-brand small { display: block; margin-top: 3px; color: #72827d; font-size: 9px; font-weight: 750; letter-spacing: .095em; }
+.dhc-market-nav { display: flex; flex: 1; align-items: center; justify-content: center; gap: clamp(16px, 2.4vw, 34px); }
+.dhc-market-nav a { color: #52635e; font-size: 13px; font-weight: 720; text-decoration: none; transition: color .15s ease; }
+.dhc-market-nav a:hover, .dhc-market-footer a:hover { color: var(--market-green); }
+.dhc-market-auth { display: flex; align-items: center; gap: 9px; }
+.dhc-market-login, .dhc-market-join { display: inline-flex; align-items: center; justify-content: center; gap: 13px; min-height: 43px; padding: 0 18px; border: 1px solid transparent; border-radius: 11px; font-size: 13px; font-weight: 820; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.dhc-market-login { border-color: #dbe8e1; color: var(--market-green-dark); background: #eff7f2; }
+.dhc-market-join { color: #fff; background: var(--market-green); box-shadow: 0 8px 18px rgba(8,135,106,.16); }
+.dhc-market-join:hover { transform: translateY(-2px); background: var(--market-green-dark); box-shadow: 0 12px 22px rgba(8,108,86,.2); }
+.dhc-market-login:hover { transform: translateY(-2px); background: #e4f1e9; }
+
+.dhc-market-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(390px, .96fr); align-items: center; gap: 40px; max-width: 1536px; min-height: 530px; margin: 0 auto; padding: 70px clamp(24px, 7vw, 112px) 66px; background: radial-gradient(ellipse at 85% 50%, rgba(183,220,102,.17), transparent 38%), var(--market-paper); }
+.dhc-market-hero-copy { position: relative; z-index: 2; max-width: 680px; }
+.dhc-market-kicker { display: inline-flex; align-items: center; gap: 8px; color: var(--market-green-dark); font-size: 10px; font-weight: 900; letter-spacing: .15em; line-height: 1.5; }
+.dhc-market-kicker > span { width: 7px; height: 7px; border-radius: 50%; background: var(--market-green); box-shadow: 0 0 0 4px #dff0e5; }
+.dhc-market-hero h1 { margin: 20px 0 16px; font-size: clamp(43px, 5.4vw, 72px); font-weight: 860; letter-spacing: -.065em; line-height: 1.01; }
+.dhc-market-hero h1 em { color: var(--market-green-dark); font-style: normal; }
+.dhc-market-hero-copy > p { max-width: 590px; margin: 0; color: var(--market-muted); font-size: clamp(16px, 1.5vw, 19px); line-height: 1.65; }
+.dhc-market-hero-actions { display: flex; align-items: center; gap: 22px; margin-top: 26px; }
+.dhc-market-hero-actions .dhc-market-join { min-height: 49px; padding: 0 22px; }
+.dhc-market-text-action { padding: 8px 0; border: 0; color: #36584d; background: transparent; font-size: 13px; font-weight: 800; }
+.dhc-market-text-action span { margin-left: 8px; color: var(--market-green); }
+.dhc-market-local-note { display: flex; align-items: center; gap: 10px; margin-top: 35px; }
+.dhc-market-pin { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; color: var(--market-green-dark); background: #e6f2e9; font-size: 20px; }
+.dhc-market-local-note b, .dhc-market-local-note small { display: block; }
+.dhc-market-local-note b { font-size: 11px; }
+.dhc-market-local-note small { margin-top: 3px; color: var(--market-muted); font-size: 10px; }
+.dhc-market-hero-art { position: relative; min-height: 386px; }
+.dhc-market-photo-frame { position: absolute; inset: 12px 0 0 42px; overflow: hidden; border: 8px solid white; border-radius: 34px 34px 90px 34px; background: #e2ebe3; box-shadow: 0 30px 70px rgba(25,62,50,.18); transform: rotate(2deg); }
+.dhc-market-photo-frame::after { position: absolute; inset: 45% 0 0; content: ""; background: linear-gradient(transparent, rgba(14,52,41,.32)); }
+.dhc-market-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+.dhc-market-photo-chip { position: absolute; z-index: 2; right: -12px; bottom: 27px; display: flex; align-items: center; gap: 12px; max-width: 300px; padding: 15px 20px 15px 15px; border: 1px solid rgba(226,233,229,.9); border-radius: 16px; background: white; box-shadow: 0 14px 40px rgba(22,57,45,.14); }
+.dhc-market-chip-icon { display: grid; flex: 0 0 40px; width: 40px; height: 40px; place-items: center; border-radius: 13px; color: white; background: var(--market-green); font-size: 20px; font-weight: 900; }
+.dhc-market-photo-chip b, .dhc-market-photo-chip small { display: block; }
+.dhc-market-photo-chip b { font-size: 12px; }
+.dhc-market-photo-chip small { margin-top: 4px; color: var(--market-muted); font-size: 10px; line-height: 1.4; }
+.dhc-market-orbit { position: absolute; z-index: 0; border: 1px solid rgba(8,135,106,.16); border-radius: 50%; pointer-events: none; }
+.dhc-market-orbit-one { inset: -22px -38px 5px 14px; }
+.dhc-market-orbit-two { inset: -42px -58px -16px -7px; border-color: rgba(8,135,106,.08); }
+
+.dhc-market-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1280px; margin: -8px auto 0; padding: 19px 24px; border: 1px solid var(--market-line); border-radius: 18px; background: white; box-shadow: 0 14px 42px rgba(20,55,43,.055); }
+.dhc-market-trust article { display: flex; align-items: center; gap: 12px; padding: 5px clamp(10px, 2.4vw, 30px); }
+.dhc-market-trust article + article { border-left: 1px solid var(--market-line); }
+.dhc-market-benefit-icon { display: grid; flex: 0 0 39px; width: 39px; height: 39px; place-items: center; border-radius: 13px; color: var(--market-green-dark); background: #eaf5ed; font-size: 19px; font-weight: 850; }
+.dhc-market-trust b, .dhc-market-trust small { display: block; }
+.dhc-market-trust b { font-size: 12px; }
+.dhc-market-trust small { margin-top: 4px; color: var(--market-muted); font-size: 10px; line-height: 1.4; }
+
+.dhc-market-appliances { max-width: 1370px; margin: 0 auto; padding: 82px clamp(22px, 6vw, 84px) 76px; }
+.dhc-market-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin-bottom: 25px; }
+.dhc-market-section-heading h2, .dhc-market-process-heading h2 { margin: 7px 0 6px; font-size: clamp(29px, 3.3vw, 41px); font-weight: 850; letter-spacing: -.05em; line-height: 1.1; }
+.dhc-market-section-heading p, .dhc-market-process-heading p { margin: 0; color: var(--market-muted); font-size: 14px; line-height: 1.5; }
+.dhc-market-search { display: flex; align-items: center; gap: 9px; width: min(280px, 100%); min-height: 43px; padding: 0 13px; border: 1px solid var(--market-line); border-radius: 11px; color: #80908a; background: white; }
+.dhc-market-search span { font-size: 22px; line-height: 1; }
+.dhc-market-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--market-ink); background: transparent; font-size: 12px; }
+.dhc-market-search input::placeholder { color: #95a19c; }
+.dhc-market-appliance-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.dhc-market-appliance-card { display: flex; min-width: 0; align-items: stretch; gap: 15px; padding: 10px; overflow: hidden; border: 1px solid var(--market-line); border-radius: 17px; color: var(--market-ink); background: white; text-align: left; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.dhc-market-appliance-card:hover { transform: translateY(-3px); border-color: #c6dfd0; box-shadow: 0 15px 32px rgba(21,71,52,.09); }
+.dhc-market-card-image { position: relative; flex: 0 0 105px; min-height: 115px; overflow: hidden; border-radius: 11px; background: #edf1ed; }
+.dhc-market-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .28s ease; }
+.dhc-market-appliance-card:hover .dhc-market-card-image img { transform: scale(1.06); }
+.dhc-market-card-arrow { position: absolute; right: 7px; bottom: 7px; display: grid; width: 25px; height: 25px; place-items: center; border-radius: 8px; color: var(--market-green-dark); background: rgba(255,255,255,.94); font-size: 14px; font-weight: 850; }
+.dhc-market-card-copy { display: flex; flex: 1; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 0; padding: 4px 3px 4px 0; }
+.dhc-market-card-copy b { font-size: 13px; font-weight: 850; }
+.dhc-market-card-copy small { margin-top: 6px; color: var(--market-muted); font-size: 10px; line-height: 1.5; }
+.dhc-market-card-copy strong { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--market-green-dark); font-size: 10px; }
+.dhc-market-card-copy strong span { font-size: 15px; }
+.dhc-market-no-results { grid-column: 1 / -1; padding: 26px; border: 1px dashed #cddbd2; border-radius: 16px; color: var(--market-muted); background: white; text-align: center; font-size: 13px; }
+.dhc-market-no-results a { color: var(--market-green-dark); font-weight: 800; }
+.dhc-market-more { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; padding: 15px 18px; border: 1px solid #deebe1; border-radius: 13px; color: var(--market-muted); background: #edf6ef; font-size: 11px; }
+.dhc-market-more a { color: var(--market-green-dark); font-weight: 850; text-decoration: none; }
+.dhc-market-more b { margin-left: 8px; font-size: 15px; }
+
+.dhc-market-process { padding: 66px clamp(22px, 7vw, 100px) 72px; background: #eaf3eb; text-align: center; }
+.dhc-market-process-heading { max-width: 560px; margin: 0 auto; }
+.dhc-market-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; max-width: 1190px; margin: 34px auto 27px; text-align: left; }
+.dhc-market-steps article { position: relative; min-height: 150px; padding: 20px; border: 1px solid rgba(206,223,210,.8); border-radius: 16px; background: rgba(255,255,255,.78); }
+.dhc-market-steps article > span { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; color: white; background: var(--market-green); font-size: 10px; font-weight: 900; }
+.dhc-market-steps h3 { margin: 15px 0 5px; font-size: 13px; }
+.dhc-market-steps p { margin: 0; color: var(--market-muted); font-size: 11px; line-height: 1.55; }
+.dhc-market-process > .dhc-market-join { min-height: 45px; }
+
+.dhc-market-about { display: grid; grid-template-columns: 190px minmax(0, 1fr); align-items: center; gap: 34px; max-width: 1100px; margin: 0 auto; padding: 72px 30px; }
+.dhc-market-about-mark { display: grid; width: 166px; height: 166px; place-items: center; border: 1px solid var(--market-line); border-radius: 35px; background: white; box-shadow: 0 18px 44px rgba(20,55,43,.07); }
+.dhc-market-about-mark img { width: 86%; height: 86%; object-fit: contain; }
+.dhc-market-about h2 { max-width: 700px; margin: 8px 0 10px; font-size: clamp(27px, 3vw, 37px); letter-spacing: -.045em; line-height: 1.12; }
+.dhc-market-about p { max-width: 720px; margin: 0; color: var(--market-muted); font-size: 14px; line-height: 1.7; }
+.dhc-market-about a { display: inline-block; margin-top: 17px; color: var(--market-green-dark); font-size: 12px; font-weight: 850; text-decoration: none; }
+.dhc-market-about a b { margin-left: 7px; font-size: 16px; }
+
+.dhc-market-footer { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 22px; padding: 27px clamp(22px, 6vw, 92px) 18px; border-top: 1px solid var(--market-line); background: white; }
+.dhc-market-footer p { margin: 0; color: var(--market-muted); font-size: 11px; line-height: 1.7; }
+.dhc-market-footer p a { color: var(--market-green-dark); font-weight: 850; text-decoration: none; }
+.dhc-market-footer-links { display: flex; align-items: center; gap: 14px; }
+.dhc-market-footer-links a, .dhc-market-footer-links button { padding: 0; border: 0; color: #5c6d67; background: transparent; font-size: 11px; font-weight: 750; text-decoration: none; }
+.dhc-market-copyright { grid-column: 1 / -1; padding-top: 14px; border-top: 1px solid #edf0ee; color: #84908b; font-size: 10px; }
+
+@media (max-width: 1000px) {
+  .dhc-market-header { gap: 16px; }
+  .dhc-market-nav { gap: 15px; }
+  .dhc-market-hero { grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: 15px; padding-inline: 38px; }
+  .dhc-market-photo-frame { inset-inline-start: 18px; }
+  .dhc-market-appliance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .dhc-market-topline { justify-content: center; min-height: 30px; padding-inline: 10px; font-size: 9px; }
+  .dhc-market-topline > span { display: none; }
+  .dhc-market-header { position: relative; min-height: 72px; gap: 7px; padding: 9px 13px; }
+  .dhc-market-brand { gap: 6px; }
+  .dhc-market-brand img { width: 41px; height: 41px; }
+  .dhc-market-brand > span { font-size: 14px; }
+  .dhc-market-brand small { font-size: 7px; letter-spacing: .06em; }
+  .dhc-market-nav { display: none; }
+  .dhc-market-auth { gap: 5px; margin-left: auto; }
+  .dhc-market-login, .dhc-market-join { min-height: 38px; gap: 7px; padding-inline: 11px; border-radius: 9px; font-size: 11px; }
+  .dhc-market-hero { display: block; min-height: unset; padding: 40px 19px 30px; }
+  .dhc-market-hero h1 { margin: 15px 0 12px; font-size: clamp(39px, 10vw, 54px); }
+  .dhc-market-hero-copy > p { max-width: 500px; font-size: 14px; }
+  .dhc-market-hero-actions { flex-wrap: wrap; gap: 13px; margin-top: 20px; }
+  .dhc-market-hero-actions .dhc-market-join { min-height: 45px; }
+  .dhc-market-local-note { margin-top: 21px; }
+  .dhc-market-hero-art { min-height: 240px; margin: 22px 10px 0; }
+  .dhc-market-photo-frame { inset: 4px 20px 5px 7px; border-width: 6px; border-radius: 24px 24px 58px 24px; }
+  .dhc-market-photo-chip { right: -5px; bottom: 11px; max-width: 250px; padding: 10px 13px 10px 10px; }
+  .dhc-market-chip-icon { flex-basis: 34px; width: 34px; height: 34px; }
+  .dhc-market-photo-chip b { font-size: 10px; }
+  .dhc-market-photo-chip small { font-size: 9px; }
+  .dhc-market-trust { grid-template-columns: 1fr; gap: 0; margin: 0 14px; padding: 8px 14px; }
+  .dhc-market-trust article { padding: 10px 0; }
+  .dhc-market-trust article + article { border-top: 1px solid var(--market-line); border-left: 0; }
+  .dhc-market-trust small { font-size: 10px; }
+  .dhc-market-appliances { padding: 54px 15px 45px; }
+  .dhc-market-section-heading { align-items: stretch; flex-direction: column; gap: 15px; margin-bottom: 17px; }
+  .dhc-market-section-heading h2, .dhc-market-process-heading h2 { font-size: 29px; }
+  .dhc-market-section-heading p, .dhc-market-process-heading p { font-size: 12px; }
+  .dhc-market-search { width: 100%; min-height: 42px; }
+  .dhc-market-appliance-grid { grid-template-columns: 1fr; gap: 9px; }
+  .dhc-market-appliance-card { gap: 12px; padding: 8px; border-radius: 14px; }
+  .dhc-market-card-image { flex-basis: 93px; min-height: 92px; }
+  .dhc-market-card-copy b { font-size: 12px; }
+  .dhc-market-card-copy small { margin-top: 4px; }
+  .dhc-market-card-copy strong { margin-top: 8px; }
+  .dhc-market-more { align-items: flex-start; flex-direction: column; padding: 12px 14px; }
+  .dhc-market-process { padding: 47px 16px 48px; }
+  .dhc-market-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 22px auto; }
+  .dhc-market-steps article { min-height: 145px; padding: 14px; }
+  .dhc-market-steps h3 { font-size: 12px; }
+  .dhc-market-steps p { font-size: 10px; }
+  .dhc-market-about { grid-template-columns: 1fr; justify-items: start; gap: 18px; padding: 48px 19px; }
+  .dhc-market-about-mark { width: 110px; height: 110px; border-radius: 26px; }
+  .dhc-market-about h2 { font-size: 29px; }
+  .dhc-market-about p { font-size: 12px; }
+  .dhc-market-footer { grid-template-columns: 1fr auto; gap: 14px; padding: 21px 16px 14px; }
+  .dhc-market-footer .dhc-market-brand img { width: 38px; height: 38px; }
+  .dhc-market-footer .dhc-market-brand > span { font-size: 12px; }
+  .dhc-market-footer .dhc-market-brand small { font-size: 6px; }
+  .dhc-market-footer-links { grid-column: 1 / -1; justify-content: space-between; }
+  .dhc-market-copyright { grid-column: 1 / -1; line-height: 1.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dhc-market-home *, .dhc-market-home *::before, .dhc-market-home *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

@@ -87,3 +87,15 @@
   text-decoration: none;
   font-weight: 600;
 }
+
+.auth-info-message{background:#eff6ff;color:#1d4e89;border:1px solid #93c5fd;padding:10px 14px;border-radius:6px;font-size:14px;margin-bottom:15px;text-align:center}
+
+.auth-brand-logo { display: block; width: 128px; height: 128px; object-fit: contain; margin: 0 auto 14px; }
+.auth-eyebrow { display: block; color: #248a19; text-align: center; font-size: 11px; font-weight: 800; letter-spacing: .12em; margin-bottom: 10px; }
+.login-container{width:min(410px,calc(100% - 28px));}
+.login-container form label{display:flex;flex-direction:column;gap:7px;color:#40564c;font-size:13px;font-weight:700}
+.login-container form label input{width:100%;font-size:14px}
+.auth-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;margin:0 0 16px;border:1px solid #e1eae4;border-radius:10px;background:#f4f8f5}
+.auth-mode-switch button{padding:10px 6px;border:0;border-radius:7px;background:transparent;color:#60736a;font-size:12px;font-weight:700;cursor:pointer}
+.auth-mode-switch button.selected{background:#fff;color:#167b5b;box-shadow:0 1px 5px #183d3020}
+
