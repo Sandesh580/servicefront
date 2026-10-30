@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MarketplaceHome.css";
 
@@ -27,6 +27,10 @@ const steps = [
 function MarketplaceHome() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [heroAppliance, setHeroAppliance] = useState(0);
+  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+  const heroFrame = useRef(null);
+  const heroScenes = appliances.slice(0, 3);
   const filteredAppliances = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     if (!normalized) return appliances;
@@ -35,6 +39,15 @@ function MarketplaceHome() {
 
   const bookFor = (applianceName = "") => navigate("/signup", { state: { applianceName } });
   const scrollToAppliances = () => document.getElementById("dhc-appliances")?.scrollIntoView({ behavior: "smooth" });
+  const moveHeroScene = (direction) => setHeroAppliance((current) => (current + direction + heroScenes.length) % heroScenes.length);
+  const tiltHeroScene = (event) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const bounds = heroFrame.current?.getBoundingClientRect();
+    if (!bounds) return;
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    setHeroTilt({ x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) });
+  };
 
   return (
     <main className="dhc-market-home">
@@ -63,8 +76,9 @@ function MarketplaceHome() {
       <section className="dhc-market-hero" id="dhc-home">
         <div className="dhc-market-hero-copy">
           <div className="dhc-market-kicker"><span /> YOUR LOCAL SERVICE HUB · DAMAK, JHAPA</div>
-          <h1>Appliance trouble?<br /><em>We’ll help you get home back on track.</em></h1>
-          <p>Book a home appliance service visit with DHC and follow every update from your account.</p>
+          <h1>Appliance Trouble</h1>
+          <p className="dhc-market-hero-lead">Home appliance service, right at your doorstep.<br />Trusted local care in Damak, Jhapa.</p>
+          <p className="dhc-market-hero-detail">Book a visit and follow every service update from your account.</p>
           <div className="dhc-market-hero-actions">
             <button className="dhc-market-join" type="button" onClick={() => bookFor()}>Book a service <span aria-hidden="true">→</span></button>
             <button className="dhc-market-text-action" type="button" onClick={scrollToAppliances}>Explore appliances <span aria-hidden="true">↓</span></button>
@@ -72,7 +86,20 @@ function MarketplaceHome() {
           <div className="dhc-market-local-note"><span className="dhc-market-pin">⌖</span><span><b>Serving our local community</b><small>Damak-2, Jhapa, Nepal</small></span></div>
         </div>
         <div className="dhc-market-hero-art">
-          <div className="dhc-market-photo-frame"><img src="/appliance_fridge.jpg" alt="Refrigerator in a home kitchen" /></div>
+          <div className="dhc-market-scene" ref={heroFrame} onPointerMove={tiltHeroScene} onPointerLeave={() => setHeroTilt({ x: 0, y: 0 })}>
+            <div className="dhc-market-photo-frame" style={{ "--scene-tilt-x": `${heroTilt.y * -5}deg`, "--scene-tilt-y": `${heroTilt.x * 7}deg` }}>
+              <img key={heroScenes[heroAppliance].name} src={heroScenes[heroAppliance].image} alt={`${heroScenes[heroAppliance].name} home service scene`} />
+              <span className="dhc-market-scene-vignette" />
+              <span className="dhc-market-scene-focus" />
+              <span className="dhc-market-live"><i /> DHC SERVICE IN ACTION</span>
+              <span className="dhc-market-scene-caption"><small>HOME APPLIANCE CARE</small><b>{heroScenes[heroAppliance].name}</b></span>
+            </div>
+            <button className="dhc-market-scene-arrow dhc-market-scene-prev" type="button" aria-label="Show previous appliance" onClick={() => moveHeroScene(-1)}>‹</button>
+            <button className="dhc-market-scene-arrow dhc-market-scene-next" type="button" aria-label="Show next appliance" onClick={() => moveHeroScene(1)}>›</button>
+            <div className="dhc-market-scene-dots" aria-label="Choose an appliance scene">
+              {heroScenes.map((scene, index) => <button key={scene.name} type="button" aria-label={`Show ${scene.name}`} aria-pressed={index === heroAppliance} onClick={() => setHeroAppliance(index)} />)}
+            </div>
+          </div>
           <div className="dhc-market-photo-chip"><span className="dhc-market-chip-icon">✓</span><span><b>Care at your doorstep</b><small>Service for the appliances you rely on</small></span></div>
           <div className="dhc-market-orbit dhc-market-orbit-one" />
           <div className="dhc-market-orbit dhc-market-orbit-two" />
