@@ -9,7 +9,7 @@ import {
   getDashboardStats,
   getServiceRequests,
   updateServiceRequestStatus,
-  updateServiceRequestAssignmentAndPriority,
+  updateServiceRequestAssignment,
 } from "../../api/dashboard";
 import { getTechnicians } from "../../api/technicians";
 import { clearAuthSession, getAuthSession } from "../../auth/session";
@@ -116,7 +116,6 @@ function Dashboard() {
   const [boardSearch, setBoardSearch] = useState("");
   const [boardToday, setBoardToday] = useState(false);
   const [boardPage, setBoardPage] = useState(1);
-  const [priorityFilter, setPriorityFilter] = useState("all");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [loading, setLoading] = useState(true);
@@ -215,8 +214,12 @@ function Dashboard() {
 
   const searchedRequests = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return requests;
-    return requests.filter((request) => [
+    const newestFirst = [...requests].sort((a, b) => {
+      const dateDifference = new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
+      return dateDifference || Number(b.id || b.requestNumber || 0) - Number(a.id || a.requestNumber || 0);
+    });
+    if (!term) return newestFirst;
+    return newestFirst.filter((request) => [
       request.requestNumber,
       request.customerName,
       request.appliance,
@@ -236,11 +239,10 @@ function Dashboard() {
     return (!dateFrom || closedDate >= dateFrom) && (!dateTo || closedDate <= dateTo);
   }), [closedRequests, dateFrom, dateTo, invalidDateRange]);
 
-  const queueRequests = useMemo(() => dateFilteredRequests.filter((request) => {
-    const matchesStatus = queueStatus === "all" || request.status === queueStatus;
-    const matchesPriority = priorityFilter === "all" || request.priority === priorityFilter;
-    return matchesStatus && matchesPriority;
-  }), [dateFilteredRequests, queueStatus, priorityFilter]);
+  const queueRequests = useMemo(() => dateFilteredRequests
+    .filter((request) => queueStatus === "all" || request.status === queueStatus)
+    .sort((a, b) => new Date(b.technicianActionAt || b.date || 0).getTime() - new Date(a.technicianActionAt || a.date || 0).getTime()),
+  [dateFilteredRequests, queueStatus]);
 
   const todayKey = localDateKey();
   const boardRequests = useMemo(() => {
@@ -281,7 +283,6 @@ function Dashboard() {
       ["Appliance", (request) => request.appliance],
       ["Issue", (request) => request.problemDescription || request.issue],
       ["Status", (request) => statusLabel(request.status)],
-      ["Priority", (request) => request.priority],
       ["Technician", (request) => request.assignedTechnician],
       ["Customer phone", (request) => request.customerPhone],
       ["Service address", (request) => request.serviceAddress],
@@ -303,24 +304,23 @@ function Dashboard() {
   };
   const openRequestDetails = (request) => { setSelectedRequest(request); setManagerRemark(request.managerNote || ""); };
 
-  const updateAssignmentAndPriority = async (field, value) => {
+  const updateAssignment = async (value) => {
     if (!selectedRequest || !token) return;
     const changes = {
-      priority: field === "priority" ? value : selectedRequest.priority,
-      assignedTechnician: field === "assignedTechnician" ? (value || null) : selectedRequest.assignedTechnician,
+      assignedTechnician: value || null,
       managerNote: managerRemark,
     };
     setBusyId(selectedRequest.id);
     setPageError("");
     try {
-      const updated = await updateServiceRequestAssignmentAndPriority(token, selectedRequest.id, changes);
+      const updated = await updateServiceRequestAssignment(token, selectedRequest.id, changes);
       setRequests((current) => current.map((item) => item.id === updated.id ? updated : item));
       setSelectedRequest(updated);
       setManagerRemark(updated.managerNote || "");
       setNotice(`Request #${updated.requestNumber} updated.`);
       window.setTimeout(() => setNotice(""), 3200);
     } catch (error) {
-      setPageError(error.message || "The technician or priority could not be updated.");
+      setPageError(error.message || "The technician assignment could not be updated.");
     } finally {
       setBusyId(null);
     }
@@ -334,7 +334,6 @@ function Dashboard() {
       customerName: String(formData.get("customerName") || "").trim(),
       appliance: String(formData.get("appliance") || "").trim(),
       issue: String(formData.get("issue") || "").trim(),
-      priority: String(formData.get("priority") || "-"),
       assignedTechnician: String(formData.get("assignedTechnician") || "").trim() || null,
     };
     setBusyId("create");
@@ -476,13 +475,12 @@ function Dashboard() {
               </div>
               <div className="service-board-scroll">
                 <div className="service-board-list">
-                  <div className="service-board-row service-board-labels" aria-hidden="true"><span>Call</span><span>Customer / appliance</span><span>Issue</span><span>Status</span><span>Priority</span><span>Technician / visit</span></div>
+                  <div className="service-board-row service-board-labels" aria-hidden="true"><span>Call</span><span>Customer / appliance</span><span>Issue</span><span>Status</span><span>Technician / visit</span></div>
                   {visibleBoardRequests.map((request) => <article className="service-board-row" key={request.id} role="button" tabIndex={0} aria-label={`Open call ${request.requestNumber}`} onClick={() => openRequestDetails(request)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openRequestDetails(request); } }}>
                     <span className="service-board-call"><b>#{request.requestNumber}</b><small>{formatDate(request.date)}</small></span>
                     <span className="service-board-customer"><b>{request.customerName}</b><small>{request.appliance}</small></span>
                     <span className="service-board-issue">{request.problemDescription || request.issue || "No issue details provided"}</span>
                     <span><span className={`status-pill ${statusClass(request.status)}`}>{statusLabel(request.status)}</span></span>
-                    <span><span className={`priority-chip priority-${String(request.priority || "-").toLowerCase()}`}>{request.priority || "-"}</span></span>
                     <span className="service-board-technician"><b>{request.assignedTechnician || "Unassigned"}</b><small>{request.preferredServiceDate ? `Visit ${formatServiceDate(request.preferredServiceDate)}` : "Visit date not set"}</small></span>
                   </article>)}
                   {!loading && boardRequests.length === 0 && <div className="service-board-empty">{boardToday ? "No calls are scheduled, opened or closed today." : "No calls match these filters."}</div>}
@@ -500,30 +498,29 @@ function Dashboard() {
               <div className="queue-tools">
                 <label className="queue-search"><Icon name="search" size={16} /><input aria-label="Search closed calls" value={search} onChange={(event) => updateSearch(event.target.value)} placeholder="Search closed calls" /></label>
                 <label className="select-wrap"><Icon name="filter" size={15} /><select aria-label="Filter closure status" value={queueStatus} onChange={(event) => { setCurrentPage(1); setQueueStatus(event.target.value); }}><option value="all">All closed calls</option><option value="Completed">Completed</option><option value="Rejected">Rejected</option></select></label>
-                <label className="priority-select"><span className="sr-only">Filter by priority</span><select aria-label="Filter closed calls by priority" value={priorityFilter} onChange={(event) => { setCurrentPage(1); setPriorityFilter(event.target.value); }}><option value="all">All priorities</option><option value="High">High priority</option><option value="Medium">Medium priority</option><option value="Low">Low priority</option></select></label><label className="date-filter"><span>From closure date</span><input aria-label="Closure date from" type="date" value={dateFrom} max={dateTo || undefined} onChange={(event) => { setCurrentPage(1); setDateFrom(event.target.value); }} /></label><label className="date-filter"><span>Through closure date</span><input aria-label="Closure date through" type="date" value={dateTo} min={dateFrom || undefined} onChange={(event) => { setCurrentPage(1); setDateTo(event.target.value); }} /></label><button type="button" className="export-button" onClick={exportRequests} disabled={invalidDateRange || queueRequests.length === 0}>Export Excel ({queueRequests.length})</button>
+                <label className="date-filter"><span>From closure date</span><input aria-label="Closure date from" type="date" value={dateFrom} max={dateTo || undefined} onChange={(event) => { setCurrentPage(1); setDateFrom(event.target.value); }} /></label><label className="date-filter"><span>Through closure date</span><input aria-label="Closure date through" type="date" value={dateTo} min={dateFrom || undefined} onChange={(event) => { setCurrentPage(1); setDateTo(event.target.value); }} /></label><button type="button" className="export-button" onClick={exportRequests} disabled={invalidDateRange || queueRequests.length === 0}>Export Excel ({queueRequests.length})</button>
               </div>
               <div className="queue-summary"><span>{invalidDateRange ? "Start date must be on or before end date." : `${queueRequests.length} closed calls`}</span><span>{closedRequests.filter((request) => request.status === "Completed").length} completed · {closedRequests.filter((request) => request.status === "Rejected").length} rejected</span></div>
               <div className="request-table-wrap">
                 <table className="request-table">
-                  <thead><tr><th>Call</th><th>Customer / appliance</th><th>Issue</th><th>Closure status</th><th>Priority</th><th>Paid</th><th>Closure remark</th><th>Closed date</th><th><span className="sr-only">Actions</span></th></tr></thead>
+                  <thead><tr><th>Call</th><th>Customer / appliance</th><th>Issue</th><th>Closure status</th><th>Paid</th><th>Closure remark</th><th>Closed date</th><th><span className="sr-only">Actions</span></th></tr></thead>
                   <tbody>
                     {visibleRequests.map((request) => <tr key={request.id}>
                       <td className="request-number">#{request.requestNumber}</td>
                       <td><strong>{request.customerName}</strong><small>{request.appliance}</small></td>
                       <td className="issue-cell">{request.problemDescription || request.issue}</td>
                       <td><span className={`status-pill ${statusClass(request.status)}`}>{statusLabel(request.status)}</span></td>
-                      <td><span className={`priority-dot priority-${String(request.priority || "medium").toLowerCase()}`}>{request.priority}</span></td>
                       <td className="paid-cell">{request.status === "Completed" ? request.amountPaid == null ? "Not recorded" : `NPR ${Number(request.amountPaid).toFixed(2)}` : "—"}</td>
                       <td className="closure-cell" title={request.technicianNote || "No closure remark recorded"}>{request.technicianNote || "No remark recorded"}</td>
                       <td className="date-cell">{formatDate(request.technicianActionAt || request.date)}</td>
                       <td><button type="button" className="row-action" onClick={() => openRequestDetails(request)} aria-label={`View call ${request.requestNumber}`}><Icon name="dots" size={16} /></button></td>
                     </tr>)}
-                    {!loading && queueRequests.length === 0 && <tr><td className="empty-state" colSpan="9">No closed calls match these filters.</td></tr>}
-                    {loading && requests.length === 0 && <tr><td className="empty-state" colSpan="9">Loading closed calls...</td></tr>}
+                    {!loading && queueRequests.length === 0 && <tr><td className="empty-state" colSpan="8">No closed calls match these filters.</td></tr>}
+                    {loading && requests.length === 0 && <tr><td className="empty-state" colSpan="8">Loading closed calls...</td></tr>}
                   </tbody>
                 </table>
               </div>
-              <div className="queue-footer"><span>Showing {queueRequests.length === 0 ? 0 : pageStart + 1}–{Math.min(pageStart + pageSize, queueRequests.length)} of {queueRequests.length} closed calls</span><div className="queue-pagination"><button type="button" aria-label="Previous closed calls" title="Previous calls" onClick={() => setCurrentPage((page) => Math.max(1, page - 1))} disabled={displayedPage <= 1}>←</button><span>Page {displayedPage} of {totalPages}</span><button type="button" aria-label="Next closed calls" title="Next calls" onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))} disabled={displayedPage >= totalPages}>→</button></div><button type="button" onClick={() => { setCurrentPage(1); setQueueStatus("all"); setPriorityFilter("all"); setSearch(""); setDateFrom(""); setDateTo(""); }}>Clear filters</button></div>
+              <div className="queue-footer"><span>Showing {queueRequests.length === 0 ? 0 : pageStart + 1}–{Math.min(pageStart + pageSize, queueRequests.length)} of {queueRequests.length} closed calls</span><div className="queue-pagination"><button type="button" aria-label="Previous closed calls" title="Previous calls" onClick={() => setCurrentPage((page) => Math.max(1, page - 1))} disabled={displayedPage <= 1}>←</button><span>Page {displayedPage} of {totalPages}</span><button type="button" aria-label="Next closed calls" title="Next calls" onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))} disabled={displayedPage >= totalPages}>→</button></div><button type="button" onClick={() => { setCurrentPage(1); setQueueStatus("all"); setSearch(""); setDateFrom(""); setDateTo(""); }}>Clear filters</button></div>
             </section>
           </div>
           <footer className="dashboard-footer"><span>SmartHome Service Hub</span><span>Dashboard data refreshes from SQL Server</span></footer>
@@ -538,7 +535,7 @@ function Dashboard() {
             <label>Customer name<input name="customerName" required maxLength="100" placeholder="e.g. Jamie Lee" /></label>
             <label>Appliance<input name="appliance" required maxLength="100" placeholder="e.g. Bosch dishwasher" /></label>
             <label>Issue<input name="issue" required maxLength="500" placeholder="Describe the issue" /></label>
-            <div className="form-row"><label>Priority<select name="priority" defaultValue="-"><option value="-">– Not set</option><option>Low</option><option>Medium</option><option>High</option></select></label><label>Assign technician<select name="assignedTechnician" defaultValue=""><option value="">Leave unassigned</option>{technicians.map((technician) => <option key={technician.id} value={technician.name}>{technician.name}</option>)}</select></label></div>
+            <label>Assign technician<select name="assignedTechnician" defaultValue=""><option value="">Leave unassigned</option>{technicians.map((technician) => <option key={technician.id} value={technician.name}>{technician.name}</option>)}</select></label>
             <div className="modal-actions"><button type="button" className="button button-outline" onClick={() => setShowCreate(false)}>Cancel</button><button type="submit" className="button button-primary" disabled={busyId === "create"}>{busyId === "create" ? "Saving..." : "Create request"}</button></div>
           </form>
         </section>
@@ -548,9 +545,9 @@ function Dashboard() {
         <section className="request-modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="request-detail-title">
           <div className="modal-heading"><div><p className="eyebrow">REQUEST #{selectedRequest.requestNumber}</p><h2 id="request-detail-title">{selectedRequest.appliance}</h2></div><button type="button" className="icon-button" aria-label="Close" onClick={() => setSelectedRequest(null)}><Icon name="close" /></button></div>
           <p className="detail-issue">{selectedRequest.problemDescription||selectedRequest.issue}</p>
-          <div className="detail-grid"><div><small>Customer</small><strong>{selectedRequest.customerName}</strong></div><div><small>Status</small><strong><span className={`status-pill ${statusClass(selectedRequest.status)}`}>{statusLabel(selectedRequest.status)}</span></strong></div><div><small>Priority</small><strong>{selectedRequest.priority}</strong></div><div><small>Technician</small><strong>{selectedRequest.assignedTechnician || "Unassigned"}</strong></div><div><small>Request date</small><strong>{formatDate(selectedRequest.date)}</strong></div>{selectedRequest.preferredServiceDate && <div><small>Customer requested visit</small><strong>{formatServiceDate(selectedRequest.preferredServiceDate)}</strong></div>}{selectedRequest.customerPhone && <div><small>Customer phone</small><strong>{selectedRequest.customerPhone}</strong></div>}{selectedRequest.serviceAddress && <div><small>Service address</small><strong>{selectedRequest.serviceAddress}</strong></div>}{selectedRequest.technicianNote && <div><small>{selectedRequest.status === "Completed" ? "Completion summary" : selectedRequest.status === "Rejected" ? "Rejection reason" : "Technician update"}</small><strong>{selectedRequest.technicianNote}</strong></div>}{selectedRequest.status === "Completed" && selectedRequest.amountPaid != null && <div className="detail-paid-amount"><small>Amount received by technician</small><strong>${Number(selectedRequest.amountPaid).toFixed(2)}</strong></div>}{selectedRequest.status === "Completed" && selectedRequest.technicianActionAt && <div><small>Call closed</small><strong>{new Date(selectedRequest.technicianActionAt).toLocaleString()}</strong></div>}</div>
-          <label className="detail-status-field">Remark for technician<textarea value={managerRemark} maxLength={2000} onChange={(event) => setManagerRemark(event.target.value)} placeholder="Add context for the technician" /><small>This remark is sent with your next assignment, priority, or status change.</small></label>          <label className="detail-status-field">Change priority<select value={selectedRequest.priority || "-"} disabled={busyId === selectedRequest.id} onChange={(event) => updateAssignmentAndPriority("priority", event.target.value)}><option value="-">– Not set</option><option>Low</option><option>Medium</option><option>High</option></select></label>
-          <label className="detail-status-field">Assign technician<select value={selectedRequest.assignedTechnician || ""} disabled={busyId === selectedRequest.id} onChange={(event) => updateAssignmentAndPriority("assignedTechnician", event.target.value)}><option value="">Unassigned</option>{selectedRequest.assignedTechnician && !technicians.some((technician) => technician.name === selectedRequest.assignedTechnician) && <option value={selectedRequest.assignedTechnician}>{selectedRequest.assignedTechnician} (current)</option>}{technicians.map((technician) => <option key={technician.id} value={technician.name}>{technician.name}</option>)}</select></label>
+          <div className="detail-grid"><div><small>Customer</small><strong>{selectedRequest.customerName}</strong></div><div><small>Status</small><strong><span className={`status-pill ${statusClass(selectedRequest.status)}`}>{statusLabel(selectedRequest.status)}</span></strong></div><div><small>Technician</small><strong>{selectedRequest.assignedTechnician || "Unassigned"}</strong></div><div><small>Request date</small><strong>{formatDate(selectedRequest.date)}</strong></div>{selectedRequest.preferredServiceDate && <div><small>Customer requested visit</small><strong>{formatServiceDate(selectedRequest.preferredServiceDate)}</strong></div>}{selectedRequest.customerPhone && <div><small>Customer phone</small><strong>{selectedRequest.customerPhone}</strong></div>}{selectedRequest.serviceAddress && <div><small>Service address</small><strong>{selectedRequest.serviceAddress}</strong></div>}{selectedRequest.technicianNote && <div><small>{selectedRequest.status === "Completed" ? "Completion summary" : selectedRequest.status === "Rejected" ? "Rejection reason" : "Technician update"}</small><strong>{selectedRequest.technicianNote}</strong></div>}{selectedRequest.status === "Completed" && selectedRequest.amountPaid != null && <div className="detail-paid-amount"><small>Amount received by technician</small><strong>${Number(selectedRequest.amountPaid).toFixed(2)}</strong></div>}{selectedRequest.status === "Completed" && selectedRequest.technicianActionAt && <div><small>Call closed</small><strong>{new Date(selectedRequest.technicianActionAt).toLocaleString()}</strong></div>}</div>
+          <label className="detail-status-field">Remark for technician<textarea value={managerRemark} maxLength={2000} onChange={(event) => setManagerRemark(event.target.value)} placeholder="Add context for the technician" /><small>This remark is sent with your next assignment or status change.</small></label>
+          <label className="detail-status-field">Assign technician<select value={selectedRequest.assignedTechnician || ""} disabled={busyId === selectedRequest.id} onChange={(event) => updateAssignment(event.target.value)}><option value="">Unassigned</option>{selectedRequest.assignedTechnician && !technicians.some((technician) => technician.name === selectedRequest.assignedTechnician) && <option value={selectedRequest.assignedTechnician}>{selectedRequest.assignedTechnician} (current)</option>}{technicians.map((technician) => <option key={technician.id} value={technician.name}>{technician.name}</option>)}</select></label>
           <label className="detail-status-field">Update status<select value={selectedRequest.status} disabled={busyId === selectedRequest.id} onChange={async (event) => { const selected = selectedRequest; const status = event.target.value; setBusyId(selected.id); try { const updated = await updateServiceRequestStatus(token, selected.id, status, managerRemark); setRequests((current) => current.map((item) => item.id === updated.id ? updated : item)); setSelectedRequest(updated);
       setManagerRemark(updated.managerNote || ""); setStats(await getDashboardStats(token)); } catch (error) { setPageError(error.message); } finally { setBusyId(null); } }}>{STATUS_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
         </section>

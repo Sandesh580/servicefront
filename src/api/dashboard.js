@@ -47,7 +47,7 @@ export function updateServiceRequestStatus(token, id, status, managerNote = "") 
   });
 }
 
-export function updateServiceRequestAssignmentAndPriority(token, id, changes) {
+export function updateServiceRequestAssignment(token, id, changes) {
   return dashboardRequest(`/requests/${id}/assignment`, token, {
     method: "PATCH",
     body: JSON.stringify(changes),
