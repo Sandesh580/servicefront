@@ -6,7 +6,7 @@ import Signup from "./components/signup/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import CustomerPortal from "./components/customer/CustomerPortal";
 import TechnicianWorkspace from "./components/technician/TechnicianWorkspace";
-import PublicHome from "./components/home/PublicHome";
+import MarketplaceHome from "./components/home/MarketplaceHome"
 
 function landingPath() {
   const session = getAuthSession();
@@ -19,7 +19,7 @@ function landingPath() {
 
 function RootRoute() {
   const session = getAuthSession();
-  return session ? <Navigate to={landingPath()} replace /> : <PublicHome />;
+  return session ? <Navigate to={landingPath()} replace /> : <MarketplaceHome />;
 }
 
 function ProtectedRole({ roles, children }) {
